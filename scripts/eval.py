@@ -83,7 +83,7 @@ class Evaluator:
         # Init model and hyperparameters
         self.hparams = tplr.load_hparams()
         self.model = LlamaForCausalLM(config=self.hparams.model_config)
-        self.model.to(self.config.device)
+        # self.model.to(self.config.device)
 
         # Initialize wandb with proper group and job type
         self.wandb_run = tplr.initialize_wandb(

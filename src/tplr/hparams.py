@@ -96,7 +96,10 @@ def create_namespace(hparams: dict) -> SimpleNamespace:
             num_key_value_heads=hparams_ns.num_key_value_heads,
             activation_function=hparams_ns.activation_function,
             max_position_embeddings=hparams_ns.max_position_embeddings,
+            device_map="auto",
         )
+
+        print(hparams_ns.model_config)
     except Exception as e:
         logger.error(f"Failed to create model config: {e}")
         raise

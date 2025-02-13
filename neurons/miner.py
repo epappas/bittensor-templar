@@ -102,7 +102,7 @@ class Miner:
 
         # Init model with hparams config
         self.model = LlamaForCausalLM(self.hparams.model_config)
-        self.model.to(self.config.device)
+        # self.model.to(self.config.device)
         self.tokenizer = self.hparams.tokenizer
 
         # Init compression
@@ -425,14 +425,14 @@ class Miner:
                     # Optimization metrics
                     "miner/learning_rate": self.scheduler.get_last_lr()[0],
                     # Gradient statistics as points
-                    "miner/mean_grad_norm": sum(grad_norms) / len(grad_norms)
-                    if grad_norms
-                    else 0,
+                    "miner/mean_grad_norm": (
+                        sum(grad_norms) / len(grad_norms) if grad_norms else 0
+                    ),
                     "miner/max_grad_norm": max(grad_norms) if grad_norms else 0,
                     "miner/min_grad_norm": min(grad_norms) if grad_norms else 0,
-                    "miner/grad_norm_std": torch.tensor(grad_norms).std().item()
-                    if grad_norms
-                    else 0,
+                    "miner/grad_norm_std": (
+                        torch.tensor(grad_norms).std().item() if grad_norms else 0
+                    ),
                     "miner/mean_weight_norm": sum(weight_norms) / len(weight_norms),
                     "miner/mean_momentum_norm": sum(momentum_norms)
                     / len(momentum_norms),
@@ -529,14 +529,14 @@ class Miner:
                     "miner/effective_batch_size": len(self.peers)
                     * self.hparams.batch_size,
                     "miner/learning_rate": self.scheduler.get_last_lr()[0],
-                    "miner/mean_grad_norm": sum(grad_norms) / len(grad_norms)
-                    if grad_norms
-                    else 0,
+                    "miner/mean_grad_norm": (
+                        sum(grad_norms) / len(grad_norms) if grad_norms else 0
+                    ),
                     "miner/max_grad_norm": max(grad_norms) if grad_norms else 0,
                     "miner/min_grad_norm": min(grad_norms) if grad_norms else 0,
-                    "miner/grad_norm_std": torch.tensor(grad_norms).std().item()
-                    if grad_norms
-                    else 0,
+                    "miner/grad_norm_std": (
+                        torch.tensor(grad_norms).std().item() if grad_norms else 0
+                    ),
                     "miner/mean_weight_norm": sum(weight_norms) / len(weight_norms),
                     "miner/mean_momentum_norm": sum(momentum_norms)
                     / len(momentum_norms),

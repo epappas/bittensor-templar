@@ -113,8 +113,9 @@ class Validator:
         self.uid = self.metagraph.hotkeys.index(self.wallet.hotkey.ss58_address)
 
         # Init model with hparams config
+        self.hparams.model_config.device_map = "auto"
         self.model = LlamaForCausalLM(self.hparams.model_config)
-        self.model.to(self.config.device)
+        # self.model.to(self.config.device)
         self.tokenizer = self.hparams.tokenizer
 
         # Init compression
@@ -825,19 +826,20 @@ class Validator:
                     # new_avg = (1-alpha) * old_avg + alpha * new_value
                     # where alpha is binary_score_ma_alpha hyperparameter
                     self.binary_moving_averages[eval_uid] = (
-                        (1 - self.hparams.binary_score_ma_alpha)
-                        * self.binary_moving_averages[eval_uid]
-                        + self.hparams.binary_score_ma_alpha
-                        * self.binary_indicator_scores[eval_uid]
-                    )
+                        1 - self.hparams.binary_score_ma_alpha
+                    ) * self.binary_moving_averages[
+                        eval_uid
+                    ] + self.hparams.binary_score_ma_alpha * self.binary_indicator_scores[
+                        eval_uid
+                    ]
                     tplr.logger.debug(
                         f"Binary Moving Average Score : {self.binary_moving_averages[eval_uid]}"
                     )
 
                     # Normalize binary moving average to [0,1] range
                     self.normalised_binary_moving_averages[eval_uid] = (
-                        (self.binary_moving_averages[eval_uid]) / 2
-                    )
+                        self.binary_moving_averages[eval_uid]
+                    ) / 2
                     tplr.logger.debug(
                         f"Normalised Binary Moving Average Score : {self.normalised_binary_moving_averages[eval_uid]}"
                     )

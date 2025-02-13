@@ -69,7 +69,7 @@ def test_operations_with_json_file():
 def get_model():
     hparams = load_hparams()
     model = LlamaForCausalLM(config=hparams.model_config)
-    return model.to(DEVICE)
+    # return model.to(DEVICE)
 
 
 async def get_slice(model, compression: int = 1e2):

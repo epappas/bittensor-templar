@@ -77,7 +77,7 @@ class Analyzer:
             tplr.logger.info(f"Initializing model on device: {self.config.device}")
             # Initialize model for transformer shapes
             self.model = LlamaForCausalLM(self.hparams.model_config)
-            self.model.to(self.config.device)
+            # self.model.to(self.config.device)
 
             # Initialize compression components
             self.transformer = tplr.compress.TransformDCT(
